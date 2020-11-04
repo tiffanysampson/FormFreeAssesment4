@@ -1,0 +1,59 @@
+Tiffany Sampson
+Answers are after each question.
+
+## Assessment 4
+
+Given a database with the following structure:
+
+* __Customers__
+```
+| Id | Name | Address | PhoneNumber | Email |
+```
+
+* __Orders__
+```
+| Id | CustomerId | OrderAmount | OrderAddress |
+```
+
+Perform the following:
+
+1. Write a SQL query to pull all customers.
+
+SELECT * from Customers
+or 
+SELECT Id, Name, Address, PhoneNumber, Email from CUSTOMERS
+
+2. Write a SQL query to pull all customers that have orders (no duplicates).
+
+SELECT DISTINCT(c.Name) FROM Customers c INNER JOIN ORDERS  ON c.id = Orders.CustomerId
+
+3. Write a SQL query to pull all customers that do not have orders.
+
+SELECT DISTINCT(c.Name) FROM Customers c LEFT JOIN ORDERS  ON c.id = Orders.CustomerId WHERE ORDERS.Id is NULL
+
+4. If you had to create an index on these tables, which fields would you most 
+likely index, and why?
+
+For the Customers table: I would add an index to the id and Name.  It would speed up the search for customers by using the id and name.  If this table has a primary key it already have an index using the primary key.
+
+For Orders table: I would add an Index for the CustomerId.  This will speed up the search process if we have multiple orders for a CustomersId.  
+
+5. Write a query that lists each customer name, email, and the number of orders 
+they have.
+
+SELECT DISTINCT(c.Name), c.Email, COUNT(ORDERS.CustomerId) AS 'Number of orders'
+FROM Customers c 
+INNER JOIN ORDERS  ON c.id = Orders.CustomerId
+GROUP BY c.Name,c.Email
+ORDER BY Count(ORDERS.CustomerId)
+
+6. Write a query that pulls all customers that have between 2 and 5 orders.
+
+SELECT 
+    C.Id, C.NAME, COUNT(O.CustomerId)'Number of orders'
+FROM
+Customers C
+INNER JOIN ORDERS O ON C.ID = O.CustomerId
+GROUP BY C.Id, C.Name
+HAVING Count(*) BETWEEN 2 AND 5
+
